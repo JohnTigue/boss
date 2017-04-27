@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import numpy as np
+from collections import OrderedDict
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -294,7 +295,7 @@ class Downsample(APIView):
         to_renderer["num_hierarchy_levels"] = experiment.num_hierarchy_levels
 
         # Gen Voxel dims
-        voxel_size = {}
+        voxel_size = OrderedDict()
         voxel_dims = resource.get_downsampled_voxel_dims(iso=iso)
         for res, dims in enumerate(voxel_dims):
             voxel_size["{}".format(res)] = dims
@@ -302,14 +303,14 @@ class Downsample(APIView):
         to_renderer["voxel_size"] = voxel_size
 
         # Gen Extent dims
-        extent = {}
+        extent = OrderedDict()
         extent_dims = resource.get_downsampled_extent_dims(iso=iso)
         for res, dims in enumerate(extent_dims):
             extent["{}".format(res)] = dims
         to_renderer["extent"] = extent
 
         # Get Cuboid dims
-        cuboid_size = {}
+        cuboid_size = OrderedDict()
         for res in range(0, experiment.num_hierarchy_levels):
             cuboid_size["{}".format(res)] = CUBOIDSIZE[res]
         to_renderer["cuboid_size"] = cuboid_size
